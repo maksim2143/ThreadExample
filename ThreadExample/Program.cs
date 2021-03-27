@@ -10,34 +10,14 @@ namespace ThreadExample
     {
         static void Main(string[] args)
         {
-            var result = Enumerable.Range(0, 2000)
-            .Split(2)
-            .Select(h => new Obj(h.ToList()))
-            .Select(j => Task.Run(() =>
-             {
-              j.Start();
-                 return j;
-             })).ToArray();
-            Task.WaitAll(result);
-            var obj = result.SelectMany(h => h.Result.Result).ToList();
-            foreach (var item in obj)
+            ObjRepository<string> obj = new ObjRepository<string>(Enumerable.Repeat<string>("-", 100).ToList());
+            Worker<string, string> worker = new Worker<string, string>(obj, a => "1)" + a);
+            foreach (var item in worker.Start(4))
             {
                 Console.WriteLine(item);
             }
-            Console.ReadKey(); 
+            Console.ReadLine();
         }
     }
-    class Obj
-    {
-        public void Start()
-        {
-            this.Result = ls.Select(q => "1) " + q).ToList();
-        }
-        public List<string> Result { private set; get; }
-        List<int> ls;
-        public Obj(List<int> ls)
-        {
-            this.ls = ls;
-        }
-    }
+  
 }
