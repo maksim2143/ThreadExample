@@ -23,13 +23,12 @@ namespace ThreadExample
             Task.WaitAll(result);
             return result
                 .SelectMany(q => q?.Result?.Result)
-                //.ToList()
                 .Where(q => q != null)
                 .ToList();
         }
         Repository<T> repository;
         Func<T, R> action;
-        public Worker(Repository<T> repository,Func<T,R> action)
+        public Worker(Repository<T> repository,Func<T,R> action,Action actionCreate=null)
         {
             this.action = action;
             this.repository = repository;
