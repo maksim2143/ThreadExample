@@ -22,7 +22,7 @@ namespace ThreadExample
         public Obj(List<T> ls,Func<T,R> action)
         {
             this.ls = ls;
-            this.action = action;
+            this.action = (Func<T, R>)action.Clone();
             this.Result = new List<R>();    
         }
     }

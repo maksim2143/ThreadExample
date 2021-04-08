@@ -7,18 +7,25 @@ using SplitArray;
 using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace ThreadExample
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
+            Start();
+        }
+        static void Start()
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             int count = 0;
             using (HttpClient httpClient = new HttpClient())
             {
-                ObjRepository<string> obj = new ObjRepository<string>(Enumerable.Repeat<string>("-", 300).ToList());
-                Worker<string, string> worker = new Worker<string, string>(obj, a =>
+                ObjRepository<string> obj = new ObjRepository<string>(Enumerable.Repeat<string>("-", 50).ToList());
+                Worker<string, string> worker = new Worker<string, string>(obj,a =>
                 {
                     //try
                     {
@@ -35,6 +42,8 @@ namespace ThreadExample
                     Console.WriteLine(item);
                 }
             }
+            stopwatch.Stop();
+            Console.WriteLine(stopwatch.ElapsedMilliseconds);
             Console.ReadLine();
         }
     }
